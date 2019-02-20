@@ -3,4 +3,6 @@ Dynamically generated, form-based editor focussed on developing/editing JSON Sch
 
 The developments will include both the production of a new JSON-Editor example, and potentially the streamlining of the JSON Meta-Schema to focus on its usage within this new form.
 
+To run it, open `index.html` in your browser.
+
 [1] https://github.com/json-editor/json-editor 
