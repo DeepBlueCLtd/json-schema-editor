@@ -692,22 +692,11 @@ var jsonMetaSchema = `{
   },
   "title":"JSON Schema",
   "$ref":"#/definitions/schemaBase",
-  "options":{
-    "keep_oneof_values":false
-  },
-  "default":{
-    "type":"object"
-  },
   "oneOf":[
     {
       "title":"Object",
       "additionalProperties":false,
       "$ref":"#/definitions/object"
-    },
-    {
-      "title":"Array",
-      "additionalProperties":false,
-      "$ref":"#/definitions/array"
     }
   ],
   "properties":{
@@ -767,7 +756,8 @@ function updateMetaSchema() {
 function updatePreviewEditor() {
     var errors = window.metaEditor.jsonEditor.validate();
     if(errors.length) {
-        alert('Invalid schema');
+        alert('Invalid schema: see console for errors');
+        console.log(errors);
     } else {
         updateEditor(previewEditor, window.metaEditor.jsonEditor.getValue());
     }
