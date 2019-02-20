@@ -691,7 +691,25 @@ var jsonMetaSchema = `{
     }
   },
   "title":"JSON Schema",
-  "$ref":"#/definitions/schema",
+  "$ref":"#/definitions/schemaBase",
+  "options":{
+    "keep_oneof_values":false
+  },
+  "default":{
+    "type":"object"
+  },
+  "oneOf":[
+    {
+      "title":"Object",
+      "additionalProperties":false,
+      "$ref":"#/definitions/object"
+    },
+    {
+      "title":"Array",
+      "additionalProperties":false,
+      "$ref":"#/definitions/array"
+    }
+  ],
   "properties":{
     "definitions":{
       "type":"object",
