@@ -331,7 +331,13 @@ var jsonMetaSchema = `{
             "additionalProperties": false,
             "type": "object",
             "properties": {
+                "maximum": {
+                    "type": "number"
+                },
                 "default": {
+                    "type": "number"
+                },
+                "minimum": {
                     "type": "number"
                 },
                 "$schema": {
@@ -379,7 +385,13 @@ var jsonMetaSchema = `{
             "additionalProperties": false,
             "type": "object",
             "properties": {
+                "maximum": {
+                    "type": "integer"
+                },
                 "default": {
+                    "type": "integer"
+                },
+                "minimum": {
                     "type": "integer"
                 },
                 "$schema": {
