@@ -61,9 +61,11 @@ var jsonMetaSchema = `{
                     ]
                 },
                 "enum": {
+                    "format": "table",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "type": "array"
                 },
                 "description": {
                     "type": "string"
@@ -353,9 +355,11 @@ var jsonMetaSchema = `{
                     ]
                 },
                 "enum": {
+                    "format": "table",
                     "items": {
                         "type": "number"
-                    }
+                    },
+                    "type": "array"
                 },
                 "description": {
                     "type": "string"
@@ -398,9 +402,11 @@ var jsonMetaSchema = `{
                     ]
                 },
                 "enum": {
+                    "format": "table",
                     "items": {
                         "type": "integer"
-                    }
+                    },
+                    "type": "array"
                 },
                 "description": {
                     "type": "string"
@@ -408,7 +414,8 @@ var jsonMetaSchema = `{
             }
         }
     }
-}`;
+}
+`;
 
 // Setup the ACE editor
 var metaSchema = ace.edit('meta-schema');
