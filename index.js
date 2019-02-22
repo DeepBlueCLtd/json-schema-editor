@@ -63,6 +63,7 @@ var jsonMetaSchema = `{
                 "enum": {
                     "format": "table",
                     "items": {
+                        "title": "alternative",
                         "type": "string"
                     },
                     "type": "array"
@@ -357,6 +358,7 @@ var jsonMetaSchema = `{
                 "enum": {
                     "format": "table",
                     "items": {
+                        "title": "alternative",
                         "type": "number"
                     },
                     "type": "array"
@@ -404,6 +406,7 @@ var jsonMetaSchema = `{
                 "enum": {
                     "format": "table",
                     "items": {
+                        "title": "alternative",
                         "type": "integer"
                     },
                     "type": "array"
