@@ -487,3 +487,7 @@ function updatePreviewEditor() {
 // At startup use the json metaschema
 metaSchema.setValue(jsonMetaSchema);
 updateMetaSchema();
+
+metaEditor.jsonEditor.on('change', function() {
+    updatePreviewEditor();
+});
