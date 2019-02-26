@@ -440,46 +440,46 @@ metaSchema.session.setMode('ace/mode/json');
 // Set JSONEditor options
 JSONEditor.defaults.options.iconlib = "fontawesome5";
 
-var schemaEditor = {
-    jsonEditor: null,
-    element: document.getElementById('schema-editor')
-};
+// create a JSON Editor, elementId is the id in which to render the editor
+function Editor(elementId) {
+    this.jsonEditor = null;
+    this.renderZone = document.getElementById(elementId);
 
-var previewEditor = {
-    jsonEditor: null,
-    element: document.getElementById('preview-editor')
-};
+    // Destroy editor, and remove it from view
+    this.destroy = function() {
+        if(this.jsonEditor) {
+            this.jsonEditor.destroy();
+            this.jsonEditor = null;
+        }
+    }
 
-// Recreate the editor to use the new schema
-function invalidateEditor(editor) {
-    if(editor.jsonEditor) {
-        editor.jsonEditor.destroy();
-        editor.jsonEditor = null;
+    // Recreate a new editor based on the given schema
+    this.updateSchema = function(schema) {
+        this.destroyEditor();
+        this.jsonEditor = new JSONEditor(this.renderZone, { schema: schema });
+    }
+
+    // Validate JSON
+    this.validate = function() {
+        return this.jsonEditor.validate();
+    }
+
+    // Get generated JSON
+    this.getJSON = function() {
+        return this.jsonEditor.getValue();
     }
 }
 
-function updateEditor(editor, schema) {
-    invalidateEditor(editor);
-    editor.jsonEditor = new JSONEditor(editor.element, { schema: schema});
-}
-
+var schemaEditor = new Editor('schema-editor');
+var previewEditor = new Editor('preview-editor');
 
 function updateMetaSchema() {
     try {
-        var metaSchema = JSON.parse(window.metaSchema.getValue());
-        updateEditor(window.schemaEditor, metaSchema);
-        invalidateEditor(window.previewEditor);
+        var newMetaSchema = JSON.parse(window.metaSchema.getValue());
+        window.schemaEditor.updateSchema(newMetaSchema);
+        window.previewEditor.destroy();
     } catch(err) {
         alert('Invalid json schema');
-    }
-}
-
-function updatePreviewEditor() {
-    var errors = window.schemaEditor.jsonEditor.validate();
-    if(errors.length) {
-        alert('Invalid schema');
-    } else {
-        updateEditor(previewEditor, window.schemaEditor.jsonEditor.getValue());
     }
 }
 
@@ -491,5 +491,12 @@ metaSchema.resize();
 updateMetaSchema();
 
 schemaEditor.jsonEditor.on('change', function() {
-    updatePreviewEditor();
+    // Update Preview Editor to use the new schema
+    var errors = window.schemaEditor.validate();
+    if(errors.length) {
+        alert('Invalid schema');
+    } else {
+        // Feed the schema we defined in the schema editor into the preview editor
+        window.previewEditor.updateSchema(window.schemaEditor.getJSON());
+    }
 });
