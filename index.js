@@ -486,8 +486,8 @@ function updatePreviewEditor() {
 // Setup
 // At startup use the json metaschema
 metaSchema.setValue(jsonMetaSchema);
-
-
+metaSchema.session.getSelection().clearSelection();
+metaSchema.resize();
 updateMetaSchema();
 
 schemaEditor.jsonEditor.on('change', function() {
