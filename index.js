@@ -455,7 +455,7 @@ function Editor(elementId) {
 
     // Recreate a new editor based on the given schema
     this.updateSchema = function(schema) {
-        this.destroyEditor();
+        this.destroy();
         this.jsonEditor = new JSONEditor(this.renderZone, { schema: schema });
     }
 
@@ -478,25 +478,30 @@ function updateMetaSchema() {
         var newMetaSchema = JSON.parse(window.metaSchema.getValue());
         window.schemaEditor.updateSchema(newMetaSchema);
         window.previewEditor.destroy();
+
+        // Make the previewEditor update in real time when the schemaEditor changes
+        window.schemaEditor.jsonEditor.on('change', function() {
+            // Update Preview Editor to use the new schema
+            var errors = window.schemaEditor.validate();
+            if(errors.length) {
+                alert('Invalid schema');
+            } else {
+                // Feed the schema we defined in the schema editor into the preview editor
+                window.previewEditor.updateSchema(window.schemaEditor.getJSON());
+            }
+        });
+
     } catch(err) {
         alert('Invalid json schema');
     }
 }
+
 
 // Setup
 // At startup use the json metaschema
 metaSchema.setValue(jsonMetaSchema);
 metaSchema.session.getSelection().clearSelection();
 metaSchema.resize();
+
 updateMetaSchema();
 
-schemaEditor.jsonEditor.on('change', function() {
-    // Update Preview Editor to use the new schema
-    var errors = window.schemaEditor.validate();
-    if(errors.length) {
-        alert('Invalid schema');
-    } else {
-        // Feed the schema we defined in the schema editor into the preview editor
-        window.previewEditor.updateSchema(window.schemaEditor.getJSON());
-    }
-});
