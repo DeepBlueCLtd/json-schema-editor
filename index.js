@@ -11,8 +11,13 @@ var jsonMetaSchema = `{
                 "title"
             ],
             "additionalProperties": false,
+            "title": "string type",
             "type": "object",
             "properties": {
+                "$ref": {
+                    "format": "uri",
+                    "type": "string"
+                },
                 "default": {
                     "type": "string"
                 },
@@ -48,7 +53,6 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "format": "uri",
                     "type": "string"
                 },
                 "type": {
@@ -82,8 +86,13 @@ var jsonMetaSchema = `{
                 "title"
             ],
             "additionalProperties": false,
+            "title": "null type",
             "type": "object",
             "properties": {
+                "$ref": {
+                    "format": "uri",
+                    "type": "string"
+                },
                 "default": {
                     "type": "null"
                 },
@@ -96,7 +105,6 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "format": "uri",
                     "type": "string"
                 },
                 "type": {
@@ -123,8 +131,13 @@ var jsonMetaSchema = `{
                 "items"
             ],
             "additionalProperties": false,
+            "title": "array type",
             "type": "object",
             "properties": {
+                "$ref": {
+                    "format": "uri",
+                    "type": "string"
+                },
                 "default": {
                     "type": "array"
                 },
@@ -153,7 +166,6 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "format": "uri",
                     "type": "string"
                 },
                 "type": {
@@ -218,8 +230,13 @@ var jsonMetaSchema = `{
                 "title"
             ],
             "additionalProperties": false,
+            "title": "boolean type",
             "type": "object",
             "properties": {
+                "$ref": {
+                    "format": "uri",
+                    "type": "string"
+                },
                 "default": {
                     "type": "boolean"
                 },
@@ -239,7 +256,6 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "format": "uri",
                     "type": "string"
                 },
                 "type": {
@@ -266,8 +282,13 @@ var jsonMetaSchema = `{
                 "properties"
             ],
             "additionalProperties": false,
+            "title": "object type",
             "type": "object",
             "properties": {
+                "$ref": {
+                    "format": "uri",
+                    "type": "string"
+                },
                 "default": {
                     "type": "object"
                 },
@@ -295,7 +316,6 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "format": "uri",
                     "type": "string"
                 },
                 "type": {
@@ -314,7 +334,7 @@ var jsonMetaSchema = `{
                     "type": "object",
                     "patternProperties": {
                         ".*": {
-                            "$ref": "#/definitions/schema"
+                            "$ref": "#/definitions/propertySchema"
                         }
                     }
                 }
@@ -329,8 +349,13 @@ var jsonMetaSchema = `{
                 "title"
             ],
             "additionalProperties": false,
+            "title": "number type",
             "type": "object",
             "properties": {
+                "$ref": {
+                    "format": "uri",
+                    "type": "string"
+                },
                 "maximum": {
                     "type": "number"
                 },
@@ -349,7 +374,6 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "format": "uri",
                     "type": "string"
                 },
                 "type": {
@@ -383,8 +407,13 @@ var jsonMetaSchema = `{
                 "title"
             ],
             "additionalProperties": false,
+            "title": "integer type",
             "type": "object",
             "properties": {
+                "$ref": {
+                    "format": "uri",
+                    "type": "string"
+                },
                 "maximum": {
                     "type": "integer"
                 },
@@ -403,7 +432,6 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "format": "uri",
                     "type": "string"
                 },
                 "type": {
@@ -427,6 +455,411 @@ var jsonMetaSchema = `{
                     "type": "string"
                 }
             }
+        },
+        "propertySchema": {
+            "default": {
+                "type": "object"
+            },
+            "oneOf": [
+                {
+                    "required": [
+                        "type"
+                    ],
+                    "defaultProperties": [
+                        "type",
+                        "title"
+                    ],
+                    "additionalProperties": false,
+                    "title": "null type",
+                    "type": "object",
+                    "properties": {
+                        "$ref": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "default": {
+                            "type": "null"
+                        },
+                        "$schema": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "id": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "type": {
+                            "options": {
+                                "hidden": true
+                            },
+                            "type": "string",
+                            "enum": [
+                                "null"
+                            ]
+                        },
+                        "description": {
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "required": [
+                        "type"
+                    ],
+                    "defaultProperties": [
+                        "type",
+                        "title"
+                    ],
+                    "additionalProperties": false,
+                    "title": "boolean type",
+                    "type": "object",
+                    "properties": {
+                        "$ref": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "default": {
+                            "type": "boolean"
+                        },
+                        "format": {
+                            "type": "string",
+                            "enum": [
+                                "select",
+                                "checkbox"
+                            ]
+                        },
+                        "$schema": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "id": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "type": {
+                            "options": {
+                                "hidden": true
+                            },
+                            "type": "string",
+                            "enum": [
+                                "boolean"
+                            ]
+                        },
+                        "description": {
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "required": [
+                        "type"
+                    ],
+                    "defaultProperties": [
+                        "type",
+                        "title"
+                    ],
+                    "additionalProperties": false,
+                    "title": "string type",
+                    "type": "object",
+                    "properties": {
+                        "$ref": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "default": {
+                            "type": "string"
+                        },
+                        "format": {
+                            "type": "string",
+                            "enum": [
+                                "color",
+                                "date",
+                                "datetime",
+                                "datetime-local",
+                                "email",
+                                "month",
+                                "number",
+                                "range",
+                                "tel",
+                                "text",
+                                "textarea",
+                                "time",
+                                "url",
+                                "week",
+                                "json",
+                                "sql",
+                                "xml",
+                                "yaml"
+                            ]
+                        },
+                        "$schema": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "id": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "type": {
+                            "options": {
+                                "hidden": true
+                            },
+                            "type": "string",
+                            "enum": [
+                                "string"
+                            ]
+                        },
+                        "enum": {
+                            "format": "table",
+                            "items": {
+                                "title": "alternative",
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "description": {
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "required": [
+                        "type"
+                    ],
+                    "defaultProperties": [
+                        "type",
+                        "title"
+                    ],
+                    "additionalProperties": false,
+                    "title": "integer type",
+                    "type": "object",
+                    "properties": {
+                        "$ref": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "maximum": {
+                            "type": "integer"
+                        },
+                        "default": {
+                            "type": "integer"
+                        },
+                        "minimum": {
+                            "type": "integer"
+                        },
+                        "$schema": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "id": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "type": {
+                            "options": {
+                                "hidden": true
+                            },
+                            "type": "string",
+                            "enum": [
+                                "integer"
+                            ]
+                        },
+                        "enum": {
+                            "format": "table",
+                            "items": {
+                                "title": "alternative",
+                                "type": "integer"
+                            },
+                            "type": "array"
+                        },
+                        "description": {
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "required": [
+                        "type"
+                    ],
+                    "defaultProperties": [
+                        "type",
+                        "title"
+                    ],
+                    "additionalProperties": false,
+                    "title": "number type",
+                    "type": "object",
+                    "properties": {
+                        "$ref": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "maximum": {
+                            "type": "number"
+                        },
+                        "default": {
+                            "type": "number"
+                        },
+                        "minimum": {
+                            "type": "number"
+                        },
+                        "$schema": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "id": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "type": {
+                            "options": {
+                                "hidden": true
+                            },
+                            "type": "string",
+                            "enum": [
+                                "number"
+                            ]
+                        },
+                        "enum": {
+                            "format": "table",
+                            "items": {
+                                "title": "alternative",
+                                "type": "number"
+                            },
+                            "type": "array"
+                        },
+                        "description": {
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "required": [
+                        "type"
+                    ],
+                    "defaultProperties": [
+                        "type",
+                        "title",
+                        "properties"
+                    ],
+                    "additionalProperties": false,
+                    "title": "object type",
+                    "type": "object",
+                    "properties": {
+                        "$ref": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "default": {
+                            "type": "object"
+                        },
+                        "format": {
+                            "type": "string",
+                            "enum": [
+                                "grid"
+                            ]
+                        },
+                        "required": {
+                            "uniqueItems": true,
+                            "format": "table",
+                            "items": {
+                                "title": "property",
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "$schema": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "id": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "type": {
+                            "options": {
+                                "hidden": true
+                            },
+                            "type": "string",
+                            "enum": [
+                                "object"
+                            ]
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "properties": {
+                            "type": "object",
+                            "patternProperties": {
+                                ".*": {
+                                    "$ref": "#/definitions/propertySchema"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "required": [
+                        "type"
+                    ],
+                    "defaultProperties": [
+                        "type",
+                        "title",
+                        "items"
+                    ],
+                    "additionalProperties": false,
+                    "title": "array type",
+                    "type": "object",
+                    "properties": {
+                        "$ref": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "default": {
+                            "type": "array"
+                        },
+                        "format": {
+                            "default": "table",
+                            "type": "string",
+                            "enum": [
+                                "array",
+                                "table",
+                                "tabs",
+                                "tabs-top",
+                                "checkbox",
+                                "select",
+                                "categories"
+                            ]
+                        },
+                        "items": {
+                            "$ref": "#/definitions/schema"
+                        },
+                        "$schema": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "id": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "type": {
+                            "options": {
+                                "hidden": true
+                            },
+                            "type": "string",
+                            "enum": [
+                                "array"
+                            ]
+                        },
+                        "description": {
+                            "type": "string"
+                        }
+                    }
+                }
+            ],
+            "options": {
+                "keep_oneof_values": false
+            },
+            "type": "object"
         }
     }
 }
