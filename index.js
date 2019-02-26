@@ -440,9 +440,9 @@ metaSchema.session.setMode('ace/mode/json');
 // Set JSONEditor options
 JSONEditor.defaults.options.iconlib = "fontawesome5";
 
-var metaEditor = {
+var schemaEditor = {
     jsonEditor: null,
-    element: document.getElementById('meta-schema-editor')
+    element: document.getElementById('schema-editor')
 };
 
 var previewEditor = {
@@ -467,7 +467,7 @@ function updateEditor(editor, schema) {
 function updateMetaSchema() {
     try {
         var metaSchema = JSON.parse(window.metaSchema.getValue());
-        updateEditor(window.metaEditor, metaSchema);
+        updateEditor(window.schemaEditor, metaSchema);
         invalidateEditor(window.previewEditor);
     } catch(err) {
         alert('Invalid json schema');
@@ -475,19 +475,21 @@ function updateMetaSchema() {
 }
 
 function updatePreviewEditor() {
-    var errors = window.metaEditor.jsonEditor.validate();
+    var errors = window.schemaEditor.jsonEditor.validate();
     if(errors.length) {
         alert('Invalid schema');
     } else {
-        updateEditor(previewEditor, window.metaEditor.jsonEditor.getValue());
+        updateEditor(previewEditor, window.schemaEditor.jsonEditor.getValue());
     }
 }
 
 // Setup
 // At startup use the json metaschema
 metaSchema.setValue(jsonMetaSchema);
+
+
 updateMetaSchema();
 
-metaEditor.jsonEditor.on('change', function() {
+schemaEditor.jsonEditor.on('change', function() {
     updatePreviewEditor();
 });
