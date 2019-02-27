@@ -1,8 +1,13 @@
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
+        <!-- Bootstrap 4 -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+        <!-- Fontawesome -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
         <!-- JSON-Editor -->
         <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
 
@@ -11,15 +16,28 @@
         <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.4.2/src-min/mode-json.js"></script>
 
         <style>
-            .sub_zone {
-                height: 50%;
-                margin: 8px;
-                overflow-y: auto;
+            .table {
+                display: flex;
+                flex-flow: column wrap;
+                width: 100vw;
+                height: 100vh;
+
+                justify-content:space-between;
+                align-items:center;
+                align-content:center;
+                margin:auto;
+                top:0;
+                bottom:0;
+                left:0;
+                right:0;
+                position:absolute;
             }
 
-            .zone {
-                float: left;
-                width: 50%;
+            .container {
+                flex:1 1 auto;
+                display: block;
+                width: 50vw;
+                height: 50vh;
             }
 
             #meta-schema {
@@ -29,32 +47,55 @@
         </style>
     </head>
     <body>
-        <div id="main">
-            <div class="zone">
-                <div class="sub_zone" id="schema-editor-zone">
-                    <h3>Schema Editor</h3>
-                    <div id="schema-editor"></div>
-                </div>
-                <div class="sub_zone" id="meta-schema-zone">
-                    <h3>Meta Schema</h3>
-                    <div id="meta-schema"> 
-                    </div>
-                    <button id="update-schema" onclick="updateMetaSchema()">
-                        Update Schema editor
-                    </button>
-                </div>
-
+        <div class="table">
+            <div class="container">
+                <h3>Schema Editor</h3>
+                <div id="schema-editor"></div>
             </div>
-            <hr>
-            <div class="zone" id="preview-editor-zone">
+            <div class="container">
+                <h3>Meta Schema</h3>
+                <div id="meta-schema"></div>
+                <button onclick="updateMetaSchema()">Update Schema Editor</button>
+            </div>
+            <div class="container">
                 <h3>Preview Editor</h3>
-                <caption>
-                    The Preview editor will be updated as you make changes in the Schema Editor
-                </caption>
                 <div id="preview-editor"></div>
+                The Preview Editor will be updated as you make changes in the Schema Editor
             </div>
-        </table>
-
+            <div class="container">
+                <h3>Options</h3>
+                <div>
+                    <label style="display:block;">Boolean options:</label>
+                    <select multiple size="9" id="boolean-options">
+                        <option value='required_by_default'>Object properties required by default</option>
+                        <option value='display_required_only'>Only show required properties by default</option>
+                        <option value='no_additional_properties'>No additional object properties</option>
+                        <option value='ajax'>Allow loading schemas via Ajax</option>
+                        <option value='disable_edit_json'>Disable "Edit JSON" buttons</option>
+                        <option value='disable_collapse'>Disable collapse buttons</option>
+                        <option value='disable_properties'>Disable properties buttons</option>
+                        <option value='disable_array_add'>Disable array add buttons</option>
+                        <option value='disable_array_reorder'>Disable array move buttons</option>
+                        <option value='disable_array_delete'>Disable array delete buttons</option>
+                        <option value='enable_array_copy'>Add copy buttons to arrays</option>
+                        <option value='array_controls_top'>Array controls will be displayed at top of list</option>
+                        <option value='disable_array_delete_all_rows'>Disable array delete all rows buttons</option>
+                        <option value='disable_array_delete_last_row'>Disable array delete last row buttons</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Object layout:</label>
+                    <select id="object-layout">
+                        <option value="normal">normal</option>
+                        <option value="grid">grid</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <script src="index.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </body>
 </html>

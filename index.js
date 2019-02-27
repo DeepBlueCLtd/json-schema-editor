@@ -127,8 +127,8 @@ var jsonMetaSchema = `{
             ],
             "defaultProperties": [
                 "type",
-                "title",
-                "items"
+                "items",
+                "title"
             ],
             "additionalProperties": false,
             "title": "array type",
@@ -278,8 +278,8 @@ var jsonMetaSchema = `{
             ],
             "defaultProperties": [
                 "type",
-                "title",
-                "properties"
+                "properties",
+                "title"
             ],
             "additionalProperties": false,
             "title": "object type",
@@ -466,8 +466,7 @@ var jsonMetaSchema = `{
                         "type"
                     ],
                     "defaultProperties": [
-                        "type",
-                        "title"
+                        "type"
                     ],
                     "additionalProperties": false,
                     "title": "null type",
@@ -507,8 +506,7 @@ var jsonMetaSchema = `{
                         "type"
                     ],
                     "defaultProperties": [
-                        "type",
-                        "title"
+                        "type"
                     ],
                     "additionalProperties": false,
                     "title": "boolean type",
@@ -555,8 +553,7 @@ var jsonMetaSchema = `{
                         "type"
                     ],
                     "defaultProperties": [
-                        "type",
-                        "title"
+                        "type"
                     ],
                     "additionalProperties": false,
                     "title": "string type",
@@ -627,8 +624,7 @@ var jsonMetaSchema = `{
                         "type"
                     ],
                     "defaultProperties": [
-                        "type",
-                        "title"
+                        "type"
                     ],
                     "additionalProperties": false,
                     "title": "integer type",
@@ -682,8 +678,7 @@ var jsonMetaSchema = `{
                         "type"
                     ],
                     "defaultProperties": [
-                        "type",
-                        "title"
+                        "type"
                     ],
                     "additionalProperties": false,
                     "title": "number type",
@@ -738,7 +733,6 @@ var jsonMetaSchema = `{
                     ],
                     "defaultProperties": [
                         "type",
-                        "title",
                         "properties"
                     ],
                     "additionalProperties": false,
@@ -803,7 +797,6 @@ var jsonMetaSchema = `{
                     ],
                     "defaultProperties": [
                         "type",
-                        "title",
                         "items"
                     ],
                     "additionalProperties": false,
@@ -872,6 +865,7 @@ metaSchema.session.setMode('ace/mode/json');
 
 // Set JSONEditor options
 JSONEditor.defaults.options.iconlib = "fontawesome5";
+JSONEditor.defaults.options.theme   = 'bootstrap4';
 
 // create a JSON Editor, elementId is the id in which to render the editor
 function Editor(elementId) {
@@ -886,8 +880,9 @@ function Editor(elementId) {
         }
     }
 
-    // Recreate a new editor based on the given schema
-    this.updateSchema = function(schema) {
+    // Recreate a new editor based on the given schema and start value
+    // If schema is undefined, the editor is not recreated, but only destroyed
+    this.updateSchema = function(schema, startval) {
         this.destroy();
         this.jsonEditor = new JSONEditor(this.renderZone, { schema: schema });
     }
@@ -906,9 +901,10 @@ function Editor(elementId) {
 var schemaEditor = new Editor('schema-editor');
 var previewEditor = new Editor('preview-editor');
 
-function updateMetaSchema() {
+function reloadEditors() {
     try {
         var newMetaSchema = JSON.parse(window.metaSchema.getValue());
+
         window.schemaEditor.updateSchema(newMetaSchema);
         window.previewEditor.destroy();
 
@@ -926,11 +922,35 @@ function updateMetaSchema() {
 
     } catch(err) {
         alert('Invalid json schema');
+        console.log(err);
     }
 }
 
+function updateMetaSchema() {
+    reloadEditors();
+}
+
+
+function updateBooleanOptions() {
+    var options = document.getElementById('boolean-options').children;
+    for(var i = 0; i < options.length; i++) {
+        JSONEditor.defaults.options[options[i].value] = options[i].selected;
+    }
+}
 
 // Setup
+document.getElementById('boolean-options').addEventListener('change', function () {
+    // Update boolean options for JSONEditor
+    updateBooleanOptions();
+    reloadEditors();
+});
+
+document.getElementById('object-layout').addEventListener('change', function () {
+    // Update object layout setting for JSONEditor
+    JSONEditor.defaults.options.object_layout = this.value;
+    reloadEditors();
+});
+
 // At startup use the json metaschema
 metaSchema.setValue(jsonMetaSchema);
 metaSchema.session.getSelection().clearSelection();
