@@ -53,7 +53,8 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "propertyOrder": 1
                 },
                 "type": {
                     "options": {
@@ -105,7 +106,8 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "propertyOrder": 1
                 },
                 "type": {
                     "options": {
@@ -166,7 +168,8 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "propertyOrder": 1
                 },
                 "type": {
                     "options": {
@@ -256,7 +259,8 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "propertyOrder": 1
                 },
                 "type": {
                     "options": {
@@ -316,7 +320,8 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "propertyOrder": 1
                 },
                 "type": {
                     "options": {
@@ -374,7 +379,8 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "propertyOrder": 1
                 },
                 "type": {
                     "options": {
@@ -432,7 +438,8 @@ var jsonMetaSchema = `{
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "propertyOrder": 1
                 },
                 "type": {
                     "options": {
