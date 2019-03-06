@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <!-- Bootstrap 4 -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <!-- Fontawesome -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+        <!-- JSON-Editor -->
+        <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+
+        <style>
+            .table {
+                display: flex;
+                flex-flow: column wrap;
+                width: 100vw;
+                height: 100vh;
+
+                justify-content:space-between;
+                align-items:center;
+                align-content:center;
+                margin:auto;
+                top:0;
+                bottom:0;
+                left:0;
+                right:0;
+                position:absolute;
+            }
+
+            .container {
+                flex:1 1 auto;
+                display: block;
+                width: 50vw;
+                height: 50vh;
+                overflow-y: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="table">
+            <div class="container">
+                <h3>Schema Editor</h3>
+                <div id="schema-editor"></div>
+            </div>
+            <div class="container">
+                <h3>Preview Editor</h3>
+                <div id="preview-editor"></div>
+                The Preview Editor will be updated as you make changes in the Schema Editor
+            </div>
+            <div class="container">
+                <h3>Options</h3>
+                <div>
+                    <label>Object layout:</label>
+                    <select id="object-layout">
+                        <option value="normal">normal</option>
+                        <option value="grid">grid</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <script src="minimum.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>
+
