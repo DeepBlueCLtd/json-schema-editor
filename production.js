@@ -865,14 +865,13 @@ var jsonMetaSchema = `{
 }
 `;
 
-// Setup the ACE editor
-var metaSchema = ace.edit('meta-schema');
-metaSchema.setTheme('ace/theme/monokai');
-metaSchema.session.setMode('ace/mode/json');
-
 // Set JSONEditor options
 JSONEditor.defaults.options.iconlib = "fontawesome5";
 JSONEditor.defaults.options.theme   = 'bootstrap4';
+
+JSONEditor.defaults.options.disable_edit_json = true;
+JSONEditor.defaults.options.disable_array_delete_all_rows = true;
+JSONEditor.defaults.options.disable_array_delete_last_row = true;
 
 // create a JSON Editor, elementId is the id in which to render the editor
 function Editor(elementId) {
@@ -906,27 +905,24 @@ function Editor(elementId) {
 }
 
 var schemaEditor = new Editor('schema-editor');
-var previewEditor = new Editor('preview-editor');
+var editorPreview = new Editor('editor-preview');
 
 function reloadEditors() {
     try {
-        var newMetaSchema = JSON.parse(window.metaSchema.getValue());
+        schemaEditor.updateSchema(JSON.parse(jsonMetaSchema));
+        editorPreview.destroy();
 
-        window.schemaEditor.updateSchema(newMetaSchema);
-        window.previewEditor.destroy();
-
-        // Make the previewEditor update in real time when the schemaEditor changes
-        window.schemaEditor.jsonEditor.on('change', function() {
+        // Make the editorPreview update in real time when the schemaEditor changes
+        schemaEditor.jsonEditor.on('change', function() {
             // Update Preview Editor to use the new schema
             var errors = window.schemaEditor.validate();
             if(errors.length) {
                 alert('Invalid schema');
             } else {
                 // Feed the schema we defined in the schema editor into the preview editor
-                window.previewEditor.updateSchema(window.schemaEditor.getJSON());
+                window.editorPreview.updateSchema(window.schemaEditor.getJSON());
             }
         });
-
     } catch(err) {
         alert('Invalid json schema');
         console.log(err);
@@ -937,31 +933,5 @@ function updateMetaSchema() {
     reloadEditors();
 }
 
-
-function updateBooleanOptions() {
-    var options = document.getElementById('boolean-options').children;
-    for(var i = 0; i < options.length; i++) {
-        JSONEditor.defaults.options[options[i].value] = options[i].selected;
-    }
-}
-
-// Setup
-document.getElementById('boolean-options').addEventListener('change', function () {
-    // Update boolean options for JSONEditor
-    updateBooleanOptions();
-    reloadEditors();
-});
-
-document.getElementById('object-layout').addEventListener('change', function () {
-    // Update object layout setting for JSONEditor
-    JSONEditor.defaults.options.object_layout = this.value;
-    reloadEditors();
-});
-
-// At startup use the json metaschema
-metaSchema.setValue(jsonMetaSchema);
-metaSchema.session.getSelection().clearSelection();
-metaSchema.resize();
-
-updateMetaSchema();
+reloadEditors();
 
