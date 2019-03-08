@@ -933,13 +933,5 @@ function updateMetaSchema() {
     reloadEditors();
 }
 
-
-// Setup
-document.getElementById('object-layout').addEventListener('change', function () {
-    // Update object layout setting for JSONEditor
-    JSONEditor.defaults.options.object_layout = this.value;
-    reloadEditors();
-});
-
 reloadEditors();
 
