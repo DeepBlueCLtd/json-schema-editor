@@ -906,16 +906,16 @@ function Editor(elementId) {
 }
 
 var schemaEditor = new Editor('schema-editor');
-var previewEditor = new Editor('preview-editor');
+var editorPreview = new Editor('editor-preview');
 
 function reloadEditors() {
     try {
         var newMetaSchema = JSON.parse(window.metaSchema.getValue());
 
         window.schemaEditor.updateSchema(newMetaSchema);
-        window.previewEditor.destroy();
+        window.editorPreview.destroy();
 
-        // Make the previewEditor update in real time when the schemaEditor changes
+        // Make the editorPreview update in real time when the schemaEditor changes
         window.schemaEditor.jsonEditor.on('change', function() {
             // Update Preview Editor to use the new schema
             var errors = window.schemaEditor.validate();
@@ -923,7 +923,7 @@ function reloadEditors() {
                 alert('Invalid schema');
             } else {
                 // Feed the schema we defined in the schema editor into the preview editor
-                window.previewEditor.updateSchema(window.schemaEditor.getJSON());
+                window.editorPreview.updateSchema(window.schemaEditor.getJSON());
             }
         });
 
