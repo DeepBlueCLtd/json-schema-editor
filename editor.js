@@ -100,7 +100,7 @@ function SchemaEditor(elementId) {
                         // For other properties buttons, remove the 'Properties' label,
                         // and use a cog as icon
                         var icon = node.querySelector('i');
-                        icon.classList.remove('fa-pencil');
+                        icon.classList.remove('fa-pen');
                         icon.classList.add('fa-cog');
 
                         var span = node.querySelector('span');
