@@ -874,7 +874,7 @@ metaSchema.session.setMode('ace/mode/json');
 JSONEditor.defaults.options.iconlib = "fontawesome5";
 JSONEditor.defaults.options.theme   = 'bootstrap4';
 
-var schemaEditor = new SaveEditor('schema-editor', 'Save', 'schema.json');
+var schemaEditor = new SchemaEditor('schema-editor');
 var editorPreview = new Editor('editor-preview');
 
 function reloadEditors() {
