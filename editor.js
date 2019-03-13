@@ -31,6 +31,38 @@ Editor.prototype.getJSON = function() {
     return this.jsonEditor.getValue();
 }
 
+// --------------- PreviewEditor subclass ------------------------------------
+
+// create a JSON Editor that doesn't allow specifying additional properties,
+// but only those specified in the schema can be set.
+// elementId is the id in which to render the editor,
+function PreviewEditor(elementId) {
+    Editor.call(this, elementId);
+}
+
+// Inherit Editor methods
+PreviewEditor.prototype = Object.create(Editor.prototype);
+
+// After `PreviewEditor.prototype = Object.create(Editor.prototype)` instruction,
+// PreviewEditor.prototype is a copy of Editor.prototype,
+// so the `constructor` property of PreviewEditor.prototype is Editor,
+// but a PreviewEditor object is created with the PreviewEditor constructor,
+// so we override the `constructor` property of PreviewEditor.prototype to PreviewEditor
+Object.defineProperty(PreviewEditor.prototype, 'constructor', {
+    value: PreviewEditor,
+    enumerable: false, // so that it does not appear in 'for in' loop
+    writable: true
+});
+
+PreviewEditor.prototype.updateSchema = function(schema) {
+    this.destroy();
+    this.jsonEditor = new JSONEditor(this.renderZone, {
+        schema: schema,
+        no_additional_properties: true
+    });
+}
+
+
 // --------------- SchemaEditor subclass -------------------------------------
 
 // create a JSON Editor for a JSON Schema, it adds a save button

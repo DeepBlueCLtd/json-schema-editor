@@ -875,7 +875,7 @@ JSONEditor.defaults.options.disable_array_delete_last_row = true;
 
 
 var schemaEditor = new SchemaEditor('schema-editor');
-var editorPreview = new Editor('editor-preview');
+var editorPreview = new PreviewEditor('editor-preview');
 
 function reloadEditors() {
     try {

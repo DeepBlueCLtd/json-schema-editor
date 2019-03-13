@@ -875,7 +875,7 @@ JSONEditor.defaults.options.iconlib = "fontawesome5";
 JSONEditor.defaults.options.theme   = 'bootstrap4';
 
 var schemaEditor = new SchemaEditor('schema-editor');
-var editorPreview = new Editor('editor-preview');
+var editorPreview = new PreviewEditor('editor-preview');
 
 function reloadEditors() {
     try {
