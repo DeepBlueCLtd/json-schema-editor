@@ -980,7 +980,7 @@ SaveEditor.prototype.updateSchema = function(schema) {
 // -------------------------------------------------------------------------
 
 
-var schemaEditor = new SaveEditor('schema-editor', 'Save Schema as File', 'schema.json');
+var schemaEditor = new SaveEditor('schema-editor', 'Save', 'schema.json');
 var editorPreview = new Editor('editor-preview');
 
 function reloadEditors() {
