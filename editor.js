@@ -31,40 +31,111 @@ Editor.prototype.getJSON = function() {
     return this.jsonEditor.getValue();
 }
 
-// --------------- SaveEditor subclass -------------------------------------
+// --------------- PreviewEditor subclass ------------------------------------
 
-// create a JSON Editor with a save button to save JSON to a file,
+// create a JSON Editor that doesn't allow specifying additional properties,
+// but only those specified in the schema can be set.
 // elementId is the id in which to render the editor,
-// saveButtonLabel is the label to but in the save button.
-// filename is the name to assign to the file to save.
-function SaveEditor(elementId, saveButtonLabel, filename) {
+function PreviewEditor(elementId) {
     Editor.call(this, elementId);
-    this.saveButtonLabel = saveButtonLabel;
-    this.filename = filename;
 }
 
 // Inherit Editor methods
-SaveEditor.prototype = Object.create(Editor.prototype);
+PreviewEditor.prototype = Object.create(Editor.prototype);
 
-// After `SaveEditor.prototype = Object.create(Editor.prototype)` instruction,
-// SaveEditor.prototype is a copy of Editor.prototype,
-// so the `constructor` property of SaveEditor.prototype is Editor,
-// but a SaveEditor object is created with the SaveEditor constructor,
-// so we override the `constructor` property of SaveEditor.prototype to SaveEditor
-Object.defineProperty(SaveEditor.prototype, 'constructor', {
-    value: SaveEditor,
+// After `PreviewEditor.prototype = Object.create(Editor.prototype)` instruction,
+// PreviewEditor.prototype is a copy of Editor.prototype,
+// so the `constructor` property of PreviewEditor.prototype is Editor,
+// but a PreviewEditor object is created with the PreviewEditor constructor,
+// so we override the `constructor` property of PreviewEditor.prototype to PreviewEditor
+Object.defineProperty(PreviewEditor.prototype, 'constructor', {
+    value: PreviewEditor,
+    enumerable: false, // so that it does not appear in 'for in' loop
+    writable: true
+});
+
+PreviewEditor.prototype.updateSchema = function(schema) {
+    this.destroy();
+    this.jsonEditor = new JSONEditor(this.renderZone, {
+        schema: schema,
+        no_additional_properties: true
+    });
+}
+
+
+// --------------- SchemaEditor subclass -------------------------------------
+
+// create a JSON Editor for a JSON Schema, it adds a save button
+// to save the Schema to a file, and also
+// makes the 'Properties' buttons distinguishable to avoid confusion between
+// schema properties and object properties.
+// elementId is the id in which to render the editor,
+function SchemaEditor(elementId) {
+    Editor.call(this, elementId);
+
+    // Check whether the node is a properties button for an object,
+    // and not for the schema of an object named properties
+    var isObjectPropertiesButton = function(node) {
+        // Does the path end in '.properties'?
+        if(node.matches('div[data-schemapath$=".properties"] > h3 > div > button.json-editor-btntype-properties')) { 
+            var containingDiv = node.parentElement.parentElement.parentElement;
+            var span = containingDiv.querySelector('h3 > span');
+
+            // Is it an object properties or a property named properties?
+            if(span && span.innerText === 'properties') { 
+                return true;
+            }
+        }
+        return false;
+    };
+
+    this.observer = new MutationObserver(function(mutationsList, observer) {
+        for(var mutation of mutationsList) {
+            mutation.addedNodes.forEach(function(node) {
+                if(node.nodeType == 1) {
+                    if(isObjectPropertiesButton(node)) {
+                        node.querySelector('span').innerText = 'Add/Remove';
+                    }
+                    else if(node.matches('button.json-editor-btntype-properties')) {
+                        // For other properties buttons, remove the 'Properties' label,
+                        // and use a cog as icon
+                        var icon = node.querySelector('i');
+                        icon.classList.remove('fa-pen');
+                        icon.classList.add('fa-cog');
+
+                        var span = node.querySelector('span');
+                        span.innerText = '';
+                    }
+                }
+            });
+        }
+    });
+
+    this.observer.observe(this.renderZone, { childList: true, subtree: true });
+}
+
+// Inherit Editor methods
+SchemaEditor.prototype = Object.create(Editor.prototype);
+
+// After `SchemaEditor.prototype = Object.create(Editor.prototype)` instruction,
+// SchemaEditor.prototype is a copy of Editor.prototype,
+// so the `constructor` property of SchemaEditor.prototype is Editor,
+// but a SchemaEditor object is created with the SchemaEditor constructor,
+// so we override the `constructor` property of SchemaEditor.prototype to SchemaEditor
+Object.defineProperty(SchemaEditor.prototype, 'constructor', {
+    value: SchemaEditor,
     enumerable: false, // so that it does not appear in 'for in' loop
     writable: true
 });
 
 // Override the updateSchema function
-SaveEditor.prototype.updateSchema = function(schema) {
+SchemaEditor.prototype.updateSchema = function(schema) {
     // Call parent method
     Editor.prototype.updateSchema.call(this, schema);
 
     // Add a save button
-    var filename = this.filename;
-    var saveButtonLabel = this.saveButtonLabel;
+    var filename = 'schema.json';
+    var saveButtonLabel = 'Save';
     
     this.jsonEditor.on('ready', function() {
         var button = this.root.getButton(saveButtonLabel, 'save', saveButtonLabel);
