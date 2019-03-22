@@ -137,7 +137,6 @@ SchemaEditor.prototype.updateSchema = function(schema) {
     var range_integer_validator = function(schema, value, path) {
         var errors = [];
         if(value.type === 'integer' && value.format === 'range') {
-            console.log(value);
             if(typeof value.minimum === 'undefined' || typeof value.maximum === 'undefined') {
                 errors.push({
                     path: path,
@@ -149,10 +148,25 @@ SchemaEditor.prototype.updateSchema = function(schema) {
         return errors;
     };
 
+    // Check that if minimum and maximum are specified, minimum <= maximum
+    var min_max_consistence_validator = function(schema, value, path) {
+        var errors = [];
+        if(value.type === 'integer' || value.type === 'number') {
+            if(typeof value.minimum !== 'undefined' && typeof value.minimum !== 'undefined' && value.minimum > value.maximum) {
+                errors.push({
+                    path: path,
+                    property: 'maximum',
+                    message: 'The maximum value must be greater than or equal than the minimum value.'
+                });
+            }
+        }
+        return errors;
+    };
+
     // Recreate the JSON-Editor
     this.jsonEditor = new JSONEditor(this.renderZone, {
         schema: schema,
-        custom_validators: [ range_integer_validator ]
+        custom_validators: [ range_integer_validator, min_max_consistence_validator ]
     });
 
 
