@@ -30,8 +30,6 @@ var jsonMetaSchema = `{
                         "datetime-local",
                         "email",
                         "month",
-                        "number",
-                        "range",
                         "tel",
                         "text",
                         "textarea",
@@ -426,6 +424,13 @@ var jsonMetaSchema = `{
                 "default": {
                     "type": "integer"
                 },
+                "format": {
+                    "type": "string",
+                    "enum": [
+                        "range",
+                        "number"
+                    ]
+                },
                 "minimum": {
                     "type": "integer"
                 },
@@ -582,8 +587,6 @@ var jsonMetaSchema = `{
                                 "datetime-local",
                                 "email",
                                 "month",
-                                "number",
-                                "range",
                                 "tel",
                                 "text",
                                 "textarea",
@@ -646,6 +649,13 @@ var jsonMetaSchema = `{
                         },
                         "default": {
                             "type": "integer"
+                        },
+                        "format": {
+                            "type": "string",
+                            "enum": [
+                                "range",
+                                "number"
+                            ]
                         },
                         "minimum": {
                             "type": "integer"

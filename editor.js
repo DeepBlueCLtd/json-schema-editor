@@ -130,8 +130,31 @@ Object.defineProperty(SchemaEditor.prototype, 'constructor', {
 
 // Override the updateSchema function
 SchemaEditor.prototype.updateSchema = function(schema) {
-    // Call parent method
-    Editor.prototype.updateSchema.call(this, schema);
+    this.destroy();
+
+    // Add extra validation logic for integer schemas that use the `range` format.
+    // For integer schemas that use the `range` format we require that minimum and maximum properties are set, too.
+    var range_integer_validator = function(schema, value, path) {
+        var errors = [];
+        if(value.type === 'integer' && value.format === 'range') {
+            console.log(value);
+            if(typeof value.minimum === 'undefined' || typeof value.maximum === 'undefined') {
+                errors.push({
+                    path: path,
+                    property: 'format',
+                    message: 'The range format requires that you specify both minimum and maximum properties, too.'
+                });
+            }
+        }
+        return errors;
+    };
+
+    // Recreate the JSON-Editor
+    this.jsonEditor = new JSONEditor(this.renderZone, {
+        schema: schema,
+        custom_validators: [ range_integer_validator ]
+    });
+
 
     // Add a save button
     var filename = 'schema.json';
