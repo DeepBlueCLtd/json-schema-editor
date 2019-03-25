@@ -12,28 +12,28 @@
         <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
 
         <style>
-            .table {
+            .top-level-table {
                 display: flex;
                 flex-flow: column wrap;
-                width: 100vw;
-                height: 100vh;
+                width: 99vw;
+                height: 99vh;
 
                 justify-content:space-between;
                 align-items:center;
                 align-content:center;
                 margin:auto;
-                top:0;
-                bottom:0;
-                left:0;
-                right:0;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
                 position:absolute;
             }
 
-            .container {
+            .editor-container {
                 flex:1 1 auto;
                 display: block;
-                width: 50vw;
-                height: 50vh;
+                width: 100%;
+                height: 50%;
                 overflow-y: auto;
             }
 
@@ -43,12 +43,12 @@
         </style>
     </head>
     <body>
-        <div class="table">
-            <div class="container">
+        <div class="top-level-table">
+            <div class="editor-container">
                 <h3>Schema Editor</h3>
                 <div id="schema-editor"></div>
             </div>
-            <div class="container">
+            <div class="editor-container">
                 <h3>Editor Preview</h3>
                 <div id="editor-preview"></div>
                 The Editor Preview will be updated as you make changes in the Schema Editor
