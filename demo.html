@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>JSON Editor Interactive Example</title>
+
+    <!-- Favicon -->
+    <link href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACbElEQVQ4jbWTz0sqcRTFT/WGFj6KguohuolWqVSEhI5IDTkh4kA/XH0dGCHMTdhPqJ1gRFjBrEyIQohAaNEioloE/QFBtMnd6x+IkCAiks5bZDH0erR6B87m3ns+cOFe4D+oHYAAsAFgv+aNWq39u7AiSdK+w+G49vl89+Pj4y+Li4svpmneJ5PJ65aWln0Ayj/DjY2Nx263uyLLMgcHB6mqKjVNoxCCW1tbLJVKFYfDcfwVpEOSpJLH46nIssyhoSGGQiH29vbS6/UyHo8zlUqxWCyyUChUmpqaSgA6rADD6XTeBINBhkIhJhIJGoZR7u7udvX09Lg0TSsvLCwwm81yZ2eHkUjkBoBhBeR9Pl8lHA5zcnKSZ2dnnJmZCb83VVUNZzIZrq2tcWVlhfPz8xUAeSvgaHR0tBqLxVgsFnl6espYLNb63hwZGWldX1+naZqcnp7m3NxcFcCRFXCi63o1kUjw8PCQBwcHfwHy+TxzuRyFENR1vQrgxArYjcfjD+l0mnt7e9ze3ubExMTHCkKIcKFQoGEYjEQiDAaDDwB2rYCU3++/zWQyNE2TuVyOuq6XvV6vKxqNupLJZFkIQUVRKMsy7Xb7LYCUFWC32WznS0tLj5ubm1xeXubU1BT9fj/7+/s5PDzMQCDAvr4+dnZ2PjY0NJwDsH++hWhbW9tVNpt9Wl1dpa7r1DSNiqJwYGCAbrebTqfzSZKkKwDRz+F3jdlstktN0+5mZ2efhRCvgUDgtaur67m5ufmurq7uEsDYV8EfeLssFwAVb89zAeB3zRe1mgrAA+BXLfOhegA/8fZt9m/cUZutB4A/Qyb7hzbvy7sAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+
+    <!-- placeholders for the theme switcher -->
+    <link rel='stylesheet' id='theme_stylesheet'>
+    <link rel='stylesheet' id='icon_stylesheet'>
+    <style>[class*="foundicon-"] {font-family: GeneralFoundicons;font-style: normal;}</style>
+
+    <!-- JSON Editor -->
+    <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+
+    <!-- LZString compression library - Used to create direct links to the demo - NOT REQUIRED for JSON Editor -->
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
+
+</head>
+
+<body>
+<p>&nbsp;</p>
+<div class='container'>
+    <div class='row'>
+        <div class='span8 col-md-8 columns eight large-8 col s8'>
+            <h2>Editor</h2>
+            <p>Below is the editor generated from the JSON Schema.</p>
+
+            <div id='editor'></div>
+        </div>
+        <div class='span4 col-md-4 columns four large-4 col s4'>
+            <div>
+                <a href='#' id='direct_link'>Direct Link</a> (preserves schema, value, and options)
+            </div>
+
+            <h2>JSON Output</h2>
+            <p>You can also make changes to the JSON here and set the value in the editor by clicking <button class='btn btn-primary' id='setvalue'>Update Form</button></p>
+            <textarea id='output' style='width: 100%; height: 300px; font-family: monospace;' class='form-control'></textarea>
+
+
+            <h2>Validation</h2>
+            <p>This will update whenever the form changes to show validation errors if there are any.</p>
+            <textarea id='validate' style='width: 100%; height: 100px; font-family: monospace;' readonly disabled class='form-control'></textarea>
+        </div>
+    </div>
+</div>
+<p>&nbsp;</p>
+<script src="editor.js"></script>
+<script>
+(function() {
+    var schema;
+    if(window.location.href.match('[?&]schema=([^&]+)')) {
+        try {
+            schema = JSON.parse(LZString.decompressFromBase64(window.location.href.match('[?&]schema=([^&]+)')[1]));
+        }
+        catch(e) {
+            console.log('invalid starting schema');
+        }
+    }
+
+    // Default starting schema
+    if(!schema) {
+        schema = {
+            title: "Person",
+            type: "object",
+            "required": [
+              'name',
+              'age',
+              'date',
+              'favorite_color',
+              'gender',
+              'location',
+              'pets'
+            ],
+            properties: {
+                name: {
+                    type: "string",
+                    description: "First and Last name",
+                    minLength: 4,
+                    default: "Jeremy Dorn"
+                },
+                age: {
+                    type: "integer",
+                    default: 25,
+                    minimum: 18,
+                    maximum: 99
+                },
+                favorite_color: {
+                    type: "string",
+                    format: "color",
+                    title: "favorite color",
+                    default: "#ffa500"
+                },
+                gender: {
+                    type: "string",
+                    enum: ["male", "female"]
+                },
+                date: {
+                  type: "string",
+                  format: "date",
+                  options: {
+                    flatpickr: {
+
+                    }
+                  }
+                },
+                location: {
+                    type: "object",
+                    title: "Location",
+                    properties: {
+                        city: {
+                            type: "string",
+                            default: "San Francisco"
+                        },
+                        state: {
+                            type: "string",
+                            default: "CA"
+                        },
+                        citystate: {
+                            type: "string",
+                            description: "This is generated automatically from the previous two fields",
+                            template: "{{city}}, {{state}}",
+                            watch: {
+                                city: 'location.city',
+                                state: 'location.state'
+                            }
+                        }
+                    }
+                },
+                pets: {
+                    type: "array",
+                    format: "table",
+                    title: "Pets",
+                    uniqueItems: true,
+                    items: {
+                        type: "object",
+                        title: "Pet",
+                        properties: {
+                            type: {
+                                type: "string",
+                                enum: ["cat","dog","bird","reptile","other"],
+                                default: "dog"
+                            },
+                            name: {
+                                type: "string"
+                            }
+                        }
+                    },
+                    default: [
+                        {
+                            type: "dog",
+                            name: "Walter"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+
+
+    // Divs/textareas on the page
+    var $output = document.getElementById('output');
+    var $validate = document.getElementById('validate');
+
+    // Buttons
+    var $set_value_button = document.getElementById('setvalue');
+
+    var editor = new PreviewEditor('editor');
+
+    var updateDirectLink = function() {
+        var url = window.location.href.replace(/\?.*/,'');
+
+        url += '?schema='+LZString.compressToBase64(JSON.stringify(schema));
+        url += '&value='+LZString.compressToBase64(JSON.stringify(editor.getJSON()));
+        //url += JSONEditor.plugins.selectize.enable ? '&enable_selectize=1':'';
+
+        document.getElementById('direct_link').href = url;
+    };
+
+    var reload = function(keep_value) {
+        var startval = (editor.isInitialized() && keep_value)? editor.getJSON() : window.startval;
+        window.startval = undefined;
+
+        editor.updateSchema(schema);
+        editor.setJSON(startval);
+
+        window.editor = editor;
+
+        // When the value of the editor changes, update the JSON output and validation message
+        editor.jsonEditor.on('change',function() {
+            var json = editor.getJSON();
+
+            $output.value = JSON.stringify(json,null,2);
+
+            var validation_errors = editor.validate();
+            // Show validation errors if there are any
+            if(validation_errors.length) {
+                $validate.value = JSON.stringify(validation_errors,null,2);
+            }
+            else {
+                $validate.value = 'valid';
+            }
+
+            updateDirectLink();
+
+            // Materialize extra.
+            if (window.Materialize) window.Materialize.updateTextFields();
+
+        });
+    };
+
+    // Start the schema and output textareas with initial values
+    $output.value = '';
+
+    // When the 'update form' button is clicked, set the editor's value
+    $set_value_button.addEventListener('click',function() {
+        editor.setJSON(JSON.parse($output.value));
+    });
+
+    // Set the theme by loading the right stylesheets
+    var setTheme = function(theme,no_reload) {
+        theme = theme || '';
+
+        var mapping = {
+            barebones: '',
+            html: '',
+            bootstrap2: 'https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css',
+            bootstrap3: 'https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
+            bootstrap4: 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+            foundation3: 'https://cdnjs.cloudflare.com/ajax/libs/foundation/3.2.5/stylesheets/foundation.css',
+            foundation4: 'https://cdnjs.cloudflare.com/ajax/libs/foundation/4.3.2/css/foundation.min.css',
+            foundation5: 'https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css',
+            foundation6: 'https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.4/foundation.min.css',
+            jqueryui: 'https://code.jquery.com/ui/1.10.3/themes/south-street/jquery-ui.css',
+            materialize: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css'
+        };
+
+        if(typeof mapping[theme] === 'undefined') {
+            theme = 'bootstrap3';
+        }
+
+        var scriptMapping = {
+            materialize: [
+                'https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js'
+            ]
+        }
+
+        var themeScripts = scriptMapping[theme],
+            head = document.getElementsByTagName('head')[0],
+            script;
+
+        if (typeof themeScripts == 'string') { themeScripts = [themeScripts]; }
+        if (Array.isArray(themeScripts)) {
+            for (var i = 0; i < themeScripts.length; i++) {
+                script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = themeScripts[i];
+                head.appendChild(script);
+            }
+        }
+
+        JSONEditor.defaults.options.theme = theme;
+        document.getElementById('theme_stylesheet').href = mapping[theme];
+
+        if(!no_reload) reload(true);
+    };
+
+    // Set the icontheme by loading the right stylesheets
+    var setIconlib = function(iconlib,no_reload) {
+        iconlib = iconlib || '';
+        var mapping = {
+            foundation2: 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/2.0/stylesheets/general_foundicons.css',
+            foundation3: 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css',
+            fontawesome3: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.css',
+            fontawesome4: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css',
+            fontawesome5: 'https://use.fontawesome.com/releases/v5.6.1/css/all.css',
+            materialicons: 'https://fonts.googleapis.com/icon?family=Material+Icons'
+        };
+
+        JSONEditor.defaults.options.iconlib = iconlib;
+        document.getElementById('icon_stylesheet').href = mapping[iconlib] || '';
+
+        if(!no_reload) reload(true);
+    };
+    
+    // Get starting value from url
+    if(window.location.href.match('[?&]value=([^&]+)')) {
+      window.startval = JSON.parse(LZString.decompressFromBase64(window.location.href.match('[?&]value=([^&]+)')[1]));
+    }
+
+    setTheme('bootstrap4', true);
+    setIconlib('fontawesome5', true);
+    JSONEditor.defaults.options.disable_edit_json = true;
+    JSONEditor.defaults.options.disable_array_delete_all_rows = true;
+    JSONEditor.defaults.options.disable_array_delete_last_row = true;
+
+    reload();
+})();
+</script>
+</body>
+</html>
+
