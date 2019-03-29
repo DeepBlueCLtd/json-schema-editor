@@ -31,6 +31,15 @@ Editor.prototype.getJSON = function() {
     return this.jsonEditor.getValue();
 }
 
+Editor.prototype.setJSON = function(val) {
+    this.jsonEditor.setValue(val);
+}
+
+// Check whether the JSON Editor is initialized
+Editor.prototype.isInitialized = function() {
+    return this.jsonEditor !== null;
+}
+
 // --------------- PreviewEditor subclass ------------------------------------
 
 // create a JSON Editor that doesn't allow specifying additional properties,
