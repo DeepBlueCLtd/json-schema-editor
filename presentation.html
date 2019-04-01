@@ -14,7 +14,7 @@
         <style>
             .top-level-table {
                 display: flex;
-                flex-flow: column wrap;
+                flex-flow: column nowrap;
                 width: 99vw;
                 height: 99vh;
 
@@ -44,12 +44,12 @@
     </head>
     <body>
         <div class="top-level-table">
+            <h3>Schema Editor</h3>
             <div class="editor-container">
-                <h3>Schema Editor</h3>
-                <div id="schema-editor"></div>
+                <div id="schema-editor" style="overflow-y: auto;"></div>
             </div>
+            <h3>Editor Preview</h3>
             <div class="editor-container">
-                <h3>Editor Preview</h3>
                 <div id="editor-preview"></div>
                 The Editor Preview will be updated as you make changes in the Schema Editor
             </div>
