@@ -943,6 +943,7 @@ var personSchema = JSON.parse(`
 {
   "title": "Person",
   "type": "object",
+  "format: "grid",
   "required": [
     "name",
     "age",
@@ -961,6 +962,7 @@ var personSchema = JSON.parse(`
     },
     "age": {
       "type": "integer",
+      "format": "range",
       "default": 25,
       "minimum": 18,
       "maximum": 99
