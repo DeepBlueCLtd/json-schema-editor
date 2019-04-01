@@ -5,7 +5,7 @@ The developments will include both the production of a new JSON-Editor example, 
 
 To run the production version, open [production.html](https://deepbluecltd.github.io/json-schema-editor/production.html) in your browser.
 
-To run the production version, with a preloaded example schema, open [presentation.html] (https://deepbluecltd.github.io/json-schema-editor/presentation.html) in your browser.
+To run the production version, with a preloaded example schema, open [presentation.html](https://deepbluecltd.github.io/json-schema-editor/presentation.html) in your browser.
 
 To run the development version, which lets you customize some of the JSON-Editor options at runtime and experiment with different JSON Meta-Schemas,
 open [development.html](https://deepbluecltd.github.io/json-schema-editor/development.html) in your browser.
