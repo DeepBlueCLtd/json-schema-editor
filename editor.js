@@ -16,9 +16,14 @@ Editor.prototype.destroy = function() {
 
 // Recreate a new editor based on the given schema and start value
 // If schema is undefined, the editor is not recreated, but only destroyed
-Editor.prototype.updateSchema = function(schema) {
+Editor.prototype.updateSchema = function(schema, startval) {
     this.destroy();
-    this.jsonEditor = new JSONEditor(this.renderZone, { schema: schema });
+    if(startval) {
+        this.jsonEditor = new JSONEditor(this.renderZone, { schema: schema, startval: startval });
+    }
+    else {
+        this.jsonEditor = new JSONEditor(this.renderZone, { schema: schema });
+    }
 }
 
 // Validate JSON
@@ -63,12 +68,21 @@ Object.defineProperty(PreviewEditor.prototype, 'constructor', {
     writable: true
 });
 
-PreviewEditor.prototype.updateSchema = function(schema) {
+PreviewEditor.prototype.updateSchema = function(schema, startval) {
     this.destroy();
-    this.jsonEditor = new JSONEditor(this.renderZone, {
-        schema: schema,
-        no_additional_properties: true
-    });
+    if(startval) {
+        this.jsonEditor = new JSONEditor(this.renderZone, {
+            schema: schema,
+            startval: startval,
+            no_additional_properties: true
+        });
+    }
+    else {
+        this.jsonEditor = new JSONEditor(this.renderZone, {
+            schema: schema,
+            no_additional_properties: true
+        });
+    }
 }
 
 
@@ -138,14 +152,14 @@ Object.defineProperty(SchemaEditor.prototype, 'constructor', {
 });
 
 // Override the updateSchema function
-SchemaEditor.prototype.updateSchema = function(schema) {
+SchemaEditor.prototype.updateSchema = function(schema, startval) {
     this.destroy();
 
     // Add extra validation logic for integer schemas that use the `range` format.
     // For integer schemas that use the `range` format we require that minimum and maximum properties are set, too.
     var range_integer_validator = function(schema, value, path) {
         var errors = [];
-        if(value.type === 'integer' && value.format === 'range') {
+        if(value !== null && value.type === 'integer' && value.format === 'range') {
             if(typeof value.minimum === 'undefined' || typeof value.maximum === 'undefined') {
                 errors.push({
                     path: path,
@@ -160,7 +174,7 @@ SchemaEditor.prototype.updateSchema = function(schema) {
     // Check that if minimum and maximum are specified, minimum <= maximum
     var min_max_consistence_validator = function(schema, value, path) {
         var errors = [];
-        if(value.type === 'integer' || value.type === 'number') {
+        if(value !== null && (value.type === 'integer' || value.type === 'number')) {
             if(typeof value.minimum !== 'undefined' && typeof value.minimum !== 'undefined' && value.minimum > value.maximum) {
                 errors.push({
                     path: path,
@@ -172,11 +186,21 @@ SchemaEditor.prototype.updateSchema = function(schema) {
         return errors;
     };
 
-    // Recreate the JSON-Editor
-    this.jsonEditor = new JSONEditor(this.renderZone, {
-        schema: schema,
-        custom_validators: [ range_integer_validator, min_max_consistence_validator ]
-    });
+    if(startval) {
+        // Recreate the JSON-Editor
+        this.jsonEditor = new JSONEditor(this.renderZone, {
+            schema: schema,
+            startval: startval,
+            custom_validators: [ range_integer_validator, min_max_consistence_validator ]
+        });
+    }
+    else {
+        // Recreate the JSON-Editor
+        this.jsonEditor = new JSONEditor(this.renderZone, {
+            schema: schema,
+            custom_validators: [ range_integer_validator, min_max_consistence_validator ]
+        });
+    }
 
 
     // Add a save button
