@@ -18,6 +18,9 @@ var jsonMetaSchema = `{
                     "format": "uri",
                     "type": "string"
                 },
+                "maxLength": {
+                    "type": "integer"
+                },
                 "default": {
                     "type": "string"
                 },
@@ -41,6 +44,9 @@ var jsonMetaSchema = `{
                         "xml",
                         "yaml"
                     ]
+                },
+                "minLength": {
+                    "type": "integer"
                 },
                 "$schema": {
                     "format": "uri",
@@ -137,6 +143,10 @@ var jsonMetaSchema = `{
                 "$ref": {
                     "format": "uri",
                     "type": "string"
+                },
+                "uniqueItems": {
+                    "format": "checkbox",
+                    "type": "boolean"
                 },
                 "default": {
                     "type": "array"
@@ -478,7 +488,8 @@ var jsonMetaSchema = `{
                         "type"
                     ],
                     "defaultProperties": [
-                        "type"
+                        "type",
+                        "title"
                     ],
                     "additionalProperties": false,
                     "title": "null type",
@@ -499,6 +510,10 @@ var jsonMetaSchema = `{
                             "format": "uri",
                             "type": "string"
                         },
+                        "title": {
+                            "type": "string",
+                            "propertyOrder": 1
+                        },
                         "type": {
                             "options": {
                                 "hidden": true
@@ -518,7 +533,8 @@ var jsonMetaSchema = `{
                         "type"
                     ],
                     "defaultProperties": [
-                        "type"
+                        "type",
+                        "title"
                     ],
                     "additionalProperties": false,
                     "title": "boolean type",
@@ -546,6 +562,10 @@ var jsonMetaSchema = `{
                             "format": "uri",
                             "type": "string"
                         },
+                        "title": {
+                            "type": "string",
+                            "propertyOrder": 1
+                        },
                         "type": {
                             "options": {
                                 "hidden": true
@@ -565,7 +585,8 @@ var jsonMetaSchema = `{
                         "type"
                     ],
                     "defaultProperties": [
-                        "type"
+                        "type",
+                        "title"
                     ],
                     "additionalProperties": false,
                     "title": "string type",
@@ -574,6 +595,9 @@ var jsonMetaSchema = `{
                         "$ref": {
                             "format": "uri",
                             "type": "string"
+                        },
+                        "maxLength": {
+                            "type": "integer"
                         },
                         "default": {
                             "type": "string"
@@ -599,6 +623,9 @@ var jsonMetaSchema = `{
                                 "yaml"
                             ]
                         },
+                        "minLength": {
+                            "type": "integer"
+                        },
                         "$schema": {
                             "format": "uri",
                             "type": "string"
@@ -606,6 +633,10 @@ var jsonMetaSchema = `{
                         "id": {
                             "format": "uri",
                             "type": "string"
+                        },
+                        "title": {
+                            "type": "string",
+                            "propertyOrder": 1
                         },
                         "type": {
                             "options": {
@@ -634,7 +665,8 @@ var jsonMetaSchema = `{
                         "type"
                     ],
                     "defaultProperties": [
-                        "type"
+                        "type",
+                        "title"
                     ],
                     "additionalProperties": false,
                     "title": "integer type",
@@ -668,6 +700,10 @@ var jsonMetaSchema = `{
                             "format": "uri",
                             "type": "string"
                         },
+                        "title": {
+                            "type": "string",
+                            "propertyOrder": 1
+                        },
                         "type": {
                             "options": {
                                 "hidden": true
@@ -695,7 +731,8 @@ var jsonMetaSchema = `{
                         "type"
                     ],
                     "defaultProperties": [
-                        "type"
+                        "type",
+                        "title"
                     ],
                     "additionalProperties": false,
                     "title": "number type",
@@ -721,6 +758,10 @@ var jsonMetaSchema = `{
                         "id": {
                             "format": "uri",
                             "type": "string"
+                        },
+                        "title": {
+                            "type": "string",
+                            "propertyOrder": 1
                         },
                         "type": {
                             "options": {
@@ -750,7 +791,8 @@ var jsonMetaSchema = `{
                     ],
                     "defaultProperties": [
                         "type",
-                        "properties"
+                        "properties",
+                        "title"
                     ],
                     "additionalProperties": false,
                     "title": "object type",
@@ -786,6 +828,10 @@ var jsonMetaSchema = `{
                             "format": "uri",
                             "type": "string"
                         },
+                        "title": {
+                            "type": "string",
+                            "propertyOrder": 1
+                        },
                         "type": {
                             "options": {
                                 "hidden": true
@@ -814,7 +860,8 @@ var jsonMetaSchema = `{
                     ],
                     "defaultProperties": [
                         "type",
-                        "items"
+                        "items",
+                        "title"
                     ],
                     "additionalProperties": false,
                     "title": "array type",
@@ -823,6 +870,10 @@ var jsonMetaSchema = `{
                         "$ref": {
                             "format": "uri",
                             "type": "string"
+                        },
+                        "uniqueItems": {
+                            "format": "checkbox",
+                            "type": "boolean"
                         },
                         "default": {
                             "type": "array"
@@ -850,6 +901,10 @@ var jsonMetaSchema = `{
                         "id": {
                             "format": "uri",
                             "type": "string"
+                        },
+                        "title": {
+                            "type": "string",
+                            "propertyOrder": 1
                         },
                         "type": {
                             "options": {
