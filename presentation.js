@@ -943,7 +943,7 @@ var personSchema = JSON.parse(`
 {
   "title": "Person",
   "type": "object",
-  "format: "grid",
+  "format": "grid",
   "required": [
     "name",
     "age",
