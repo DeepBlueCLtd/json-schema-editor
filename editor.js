@@ -69,8 +69,8 @@ Object.defineProperty(PreviewEditor.prototype, 'constructor', {
 });
 
 PreviewEditor.prototype.updateSchema = function(schema, startval) {
-    this.destroy();
     if(startval) {
+        this.destroy();
         this.jsonEditor = new JSONEditor(this.renderZone, {
             schema: schema,
             startval: startval,
@@ -78,10 +78,79 @@ PreviewEditor.prototype.updateSchema = function(schema, startval) {
         });
     }
     else {
+        // If no startval is provided, try to reuse, where possible, the old values
+        var oldValue = undefined;
+        if(this.isInitialized()) {
+            oldValue = this.getJSON();
+        }
+
+        
+        this.destroy();
         this.jsonEditor = new JSONEditor(this.renderZone, {
             schema: schema,
             no_additional_properties: true
         });
+
+        // If there was a previous value, try keeping its values
+        if(typeof oldValue !== 'undefined') {
+
+            // Helper function to remove invalid entries from objects and arrays
+            function removeKey(obj, path) {
+                if(path.length === 0 || typeof obj === 'undefined') {
+                    return; // The prop was not found, do nothing
+                }
+                else {
+                    const prop = path.shift();
+                    if(path.length === 0) {
+                        // We found the deletion point
+                        // The object may be an array, in that case,
+                        // we remove the object from the array, instead of deleting it.
+                        // Deleting an element of the array just sets that element to undefined,
+                        // but doesn't remove it from the array
+                        if(Array.isArray(obj)) {
+                            // Be sure that the path element is a number
+                            if(!isNaN(prop)) {
+                                obj.splice(prop, 1);
+                            }
+                            else {
+                                // Otherwise don't delete anything, but report the strange behavior
+                                console.log("Invalid array index: ", prop);
+                            }
+                        }
+                        else {
+                            delete obj[prop];
+                        }
+                    }
+                    else {
+                        // Keep recursing
+                        removeKey(obj[prop], path);
+                    }
+                }
+            }
+
+            // We go through all problematic properties and remove them,
+            // only keeping properties whose value is still valid.
+            var errors = this.jsonEditor.validate(oldValue);
+            for(var error of errors) {
+                var components = error.path.split('.').slice(1); // Pop 'root' from path
+                if(error.property === 'additionalProperties') {
+                    // Ignore additional properties errors.
+                    // Superflous properties shall be deleted by JSONEditor itself.
+                    continue;
+                }
+                if(components.length === 0) {
+                    // The whole object must be invalidated
+                    oldValue = undefined;
+                    break;
+                }
+                else {
+                    removeKey(oldValue, components);
+                }
+            }
+            // Merge old and new values so that old valid values are kept
+            var newValue = Object.assign(this.getJSON(), oldValue);
+            this.setJSON(newValue);
+        }
     }
 }
 
